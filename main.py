@@ -33,9 +33,7 @@ class DiscordClient(discord.Client):
         Called when the client is ready and connected to Discord.
         It initializes the bot, sets the status message, and starts repeating tasks.
         """
-
         print('Logged in as ', self.user)
-        self.sync_status_message.start()
 
     async def on_message(self, message: discord.Message):
         """
@@ -66,7 +64,7 @@ class DiscordClient(discord.Client):
         )
         reply = random.choices([i[1] for i in replies], weights=[i[0] for i in replies])
 
-        await message.reply(reply, mention_author=False)
+        await message.reply(reply[0], mention_author=False)
 
 INTENTS = discord.Intents.all()
 CLIENT = DiscordClient(intents=INTENTS)
