@@ -23,7 +23,7 @@ DEFAULT_REPLIES = (
     (4, "gluh?"),
     (3, "GLUH!!"),
     (3, "gluh gluh"),
-    (3, "\*gluh noises\*"),
+    (3, "\\*gluh noises\\*"),
     (3, "g-gluh...?"),
     (2, "gluh moment 🤯"),
     (2, "gluh 👍"),
