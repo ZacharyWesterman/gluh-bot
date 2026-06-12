@@ -52,8 +52,8 @@ class DiscordClient(discord.Client):
         if message.author == self.user:
             return
 
-        # Only respond to users that mention us.
-        if not self.user.mentioned_in(message):
+        # Only respond to users that respond to us, mention us, or mention our role.
+        if not self.user.mentioned_in(message) and '<@&1514854948066558035>' not in message.content:
             return
 
         replies = (
@@ -64,7 +64,7 @@ class DiscordClient(discord.Client):
         )
         reply = random.choices([i[1] for i in replies], weights=[i[0] for i in replies])
 
-        await message.reply(reply[0], mention_author=False)
+        await message.channel.send(reply[0])
 
 INTENTS = discord.Intents.all()
 CLIENT = DiscordClient(intents=INTENTS)
