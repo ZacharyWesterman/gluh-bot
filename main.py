@@ -13,6 +13,29 @@ with open(str(Path(__file__).parent) + '/secrets.json', 'r', encoding='utf8') as
     DISCORD_TOKEN = data['token']
     GUILD_ID = data['guild']
 
+DEFAULT_REPLIES = (
+    (10, "gluh"),
+    (10, "Gluh."),
+    (8, "...gluh?"),
+    (5, "g l u h"),
+    (5, "gluh..."),
+    (4, "gluh!"),
+    (4, "gluh?"),
+    (3, "GLUH!!"),
+    (3, "gluh gluh"),
+    (3, "\*gluh noises\*"),
+    (3, "g-gluh...?"),
+    (2, "gluh moment 🤯"),
+    (2, "gluh 👍"),
+    (2, "gluh 👎"),
+    (1, '> Guhhhh, gluh.\n\\- gluh'),
+    (1, "ERROR: gluh overflow"),
+    (1, "1. gluh\n2. gluh\n3. ???\n4. gluh"),
+    (0.5, "gluh detected. activating neurotoxin."),
+    (0.5, "I am in incredible pain. Uh, I mean... gluh"),
+    (0.1, "One day you will answer for your crimes. And God will not be as merciful as I am."),
+    (0.1, "srry busy overthrowing lithuania. be bac l8r."),
+)
 
 class DiscordClient(discord.Client):
     """
@@ -56,12 +79,7 @@ class DiscordClient(discord.Client):
         if not self.user.mentioned_in(message) and '<@&1514854948066558035>' not in message.content:
             return
 
-        replies = (
-            (0.3, 'gluh'),
-            (0.3, 'Gluh.'),
-            (0.3, '...gluh?'),
-            (0.1, '> Guhhhh, gluh.\n\\- gluh'),
-        )
+        replies = DEFAULT_REPLIES
         reply = random.choices([i[1] for i in replies], weights=[i[0] for i in replies])
 
         await message.channel.send(reply[0])
