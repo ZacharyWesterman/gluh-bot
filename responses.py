@@ -19,6 +19,15 @@ REPLIES = (
     (3, "gluh moment 🤯"),
     (3, "gluh 👍"),
     (3, "gluh 👎"),
+    (3, "gl- gluh..."),
+    (3, "gluh gluh, gluh!"),
+    (3, "are we being Gluh"),
+    (3, "like, gluh?"),
+    (3, "With extra Gluh, please."),
+    (3, "gluh ga gluh, gluh gluh."),
+    (3, "gluh gluh, or gluh?"),
+    (3, "gluh, gluh, and gluh!"),
+    (3, "Gluh with a Capital 'G'."),
     (2, "gluhn't"),
     (2, "many such cases."),
     (2, "source: gluh"),
@@ -42,7 +51,15 @@ REPLIES = (
     (0.1, "One day you will answer for your crimes. And God will not be as merciful as I am."),
     (0.1, "srry busy overthrowing lithuania. be bac l8r."),
     (0.1, "every copy of gluh is personalized"),
-    (0.1, "> No, go ahead, I've got this covered.\n> Yeah they still think it's a bot.\n> Of course I turned audio transcription off, why?\n> What?\n> Oh for fu-\n\n[END OF AUDIO LOG]"),
+    (0.1, '\n'.join([
+     "> No, go ahead, I've got this covered.",
+     "> Yeah they still think it's a bot.",
+     "> Of course I turned audio transcription off, why?",
+     "> What?",
+     "> Oh for fu-",
+     "",
+     "[END OF AUDIO LOG]",
+     ])),
 )
 
 
