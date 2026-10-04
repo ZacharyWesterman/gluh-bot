@@ -34,7 +34,7 @@ class DiscordClient(discord.Client):
         It sets up the database connection and prepares the client for use.
         """
         super().__init__(*args, **kwargs)
-        self.status_code = StatusCode.OFFLINE
+        self.status_code = StatusCode.ONLINE
 
     async def on_ready(self):
         """
@@ -42,7 +42,6 @@ class DiscordClient(discord.Client):
         It initializes the bot, sets the status message, and starts repeating tasks.
         """
         print('Logged in as ', self.user)
-        self.status_code = StatusCode.ONLINE
 
     async def on_message(self, message: discord.Message):
         """
