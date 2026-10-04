@@ -15,6 +15,12 @@ with open(str(Path(__file__).parent) + '/secrets.json', 'r', encoding='utf8') as
     DISCORD_TOKEN = data['token']
     GUILD_ID = data['guild']
 
+class Status:
+    ONLINE = 0
+    IDLE = 1
+    DO_NOT_DISTURB = 2
+    OFFLINE = 3
+
 
 class DiscordClient(discord.Client):
     """
@@ -28,7 +34,7 @@ class DiscordClient(discord.Client):
         It sets up the database connection and prepares the client for use.
         """
         super().__init__(*args, **kwargs)
-        self.activity = None
+        self.status = Status.ONLINE
 
     async def on_ready(self):
         """
@@ -60,7 +66,30 @@ class DiscordClient(discord.Client):
 
         reply = random.choices(messages(), weights=weights())
 
+        # Appear to come online
+        await self.change_presence(status=discord.Status.online, activity=None)
+        self.status = Status.ONLINE
+
+        # Respond to message
         await message.channel.send(reply[0])
+
+    @tasks.loop(seconds=15)
+    async def check_active(self) -> None:
+        """
+        Periodically check if the bot has been messaged, and if not, slowly iterate:
+        ONLINE -> IDLE -> OFFLINE
+        """
+
+        if self.status == Status.OFFLINE:
+            return
+
+        if self.status == Status.ONLINE:
+            await self.change_presence(status=discord.Status.idle, activity=None)
+            self.status = Status.IDLE
+            return
+
+        await self.change_presence(status=discord.Status.offline, activity=None)
+        self.status = Status.OFFLINE
 
 
 INTENTS = discord.Intents.all()
