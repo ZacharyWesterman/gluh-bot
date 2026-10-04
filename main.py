@@ -84,12 +84,9 @@ class DiscordClient(discord.Client):
         if self.status_code == StatusCode.IDLE:
             await self.change_presence(status=discord.Status.offline, activity=None)
             self.status_code = StatusCode.OFFLINE
-            return
-
-        if self.status == StatusCode.ONLINE:
+        elif self.status_code == StatusCode.ONLINE:
             await self.change_presence(status=discord.Status.idle, activity=None)
             self.status_code = StatusCode.IDLE
-            return
 
 
 
