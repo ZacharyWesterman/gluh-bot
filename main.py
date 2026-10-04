@@ -42,6 +42,7 @@ class DiscordClient(discord.Client):
         It initializes the bot, sets the status message, and starts repeating tasks.
         """
         print('Logged in as ', self.user)
+        self.check_active.start()
 
     async def on_message(self, message: discord.Message):
         """
