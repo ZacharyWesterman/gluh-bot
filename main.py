@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import random
+from datetime import datetime, timedelta
 
 import discord
 from discord import Forbidden, HTTPException, NotFound
@@ -35,6 +36,7 @@ class DiscordClient(discord.Client):
         """
         super().__init__(*args, **kwargs)
         self.status_code = StatusCode.ONLINE
+        self.last_message = datetime.now()
 
     async def on_ready(self):
         """
@@ -70,24 +72,34 @@ class DiscordClient(discord.Client):
         # Appear to come online
         await self.change_presence(status=discord.Status.online, activity=None)
         self.status_code = StatusCode.ONLINE
+        self.last_message = datetime.now()
 
         # Respond to message
         await message.channel.send(reply[0])
 
-    @tasks.loop(seconds=15)
+    @tasks.loop(seconds=5)
     async def check_active(self) -> None:
         """
         Periodically check if the bot has been messaged, and if not, slowly iterate:
         ONLINE -> IDLE -> OFFLINE
         """
 
-        if self.status_code == StatusCode.IDLE:
+        if self.status_code == StatusCode.OFFLINE:
+            return
+
+        diff = datetime.now() - self.last_message
+        if diff < timedelta(seconds=15):
+            return
+
+        # Go offline
+        if diff >= timedelta(seconds=30):
             await self.change_presence(status=discord.Status.offline, activity=None)
             self.status_code = StatusCode.OFFLINE
-        elif self.status_code == StatusCode.ONLINE:
-            await self.change_presence(status=discord.Status.idle, activity=None)
-            self.status_code = StatusCode.IDLE
+            return
 
+        # Go idle
+        await self.change_presence(status=discord.Status.idle, activity=None)
+        self.status_code = StatusCode.IDLE
 
 
 INTENTS = discord.Intents.all()
