@@ -15,7 +15,7 @@ with open(str(Path(__file__).parent) + '/secrets.json', 'r', encoding='utf8') as
     DISCORD_TOKEN = data['token']
     GUILD_ID = data['guild']
 
-class Status:
+class StatusCode:
     ONLINE = 0
     IDLE = 1
     DO_NOT_DISTURB = 2
@@ -35,7 +35,7 @@ class DiscordClient(discord.Client):
         """
         super().__init__(*args, **kwargs)
         self.status = None
-        self.status_code = Status.OFFLINE
+        self.status_code = StatusCode.OFFLINE
 
     async def on_ready(self):
         """
@@ -43,7 +43,7 @@ class DiscordClient(discord.Client):
         It initializes the bot, sets the status message, and starts repeating tasks.
         """
         print('Logged in as ', self.user)
-        self.status_code = Status.ONLINE
+        self.status_code = StatusCode.ONLINE
 
     async def on_message(self, message: discord.Message):
         """
@@ -70,7 +70,7 @@ class DiscordClient(discord.Client):
 
         # Appear to come online
         await self.change_presence(status=discord.Status.online, activity=None)
-        self.status_code = Status.ONLINE
+        self.status_code = StatusCode.ONLINE
 
         # Respond to message
         await message.channel.send(reply[0])
@@ -82,16 +82,16 @@ class DiscordClient(discord.Client):
         ONLINE -> IDLE -> OFFLINE
         """
 
-        if self.status_code == Status.OFFLINE:
+        if self.status_code == StatusCode.OFFLINE:
             return
 
-        if self.status == Status.ONLINE:
+        if self.status == StatusCode.ONLINE:
             await self.change_presence(status=discord.Status.idle, activity=None)
-            self.status_code = Status.IDLE
+            self.status_code = StatusCode.IDLE
             return
 
         await self.change_presence(status=discord.Status.offline, activity=None)
-        self.status_code = Status.OFFLINE
+        self.status_code = StatusCode.OFFLINE
 
 
 INTENTS = discord.Intents.all()
