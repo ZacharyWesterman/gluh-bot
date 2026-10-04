@@ -34,7 +34,8 @@ class DiscordClient(discord.Client):
         It sets up the database connection and prepares the client for use.
         """
         super().__init__(*args, **kwargs)
-        self.status = Status.OFFLINE
+        self.status = None
+        self.status_code = Status.OFFLINE
 
     async def on_ready(self):
         """
@@ -42,7 +43,7 @@ class DiscordClient(discord.Client):
         It initializes the bot, sets the status message, and starts repeating tasks.
         """
         print('Logged in as ', self.user)
-        self.status = Status.ONLINE
+        self.status_code = Status.ONLINE
 
     async def on_message(self, message: discord.Message):
         """
@@ -69,7 +70,7 @@ class DiscordClient(discord.Client):
 
         # Appear to come online
         await self.change_presence(status=discord.Status.online, activity=None)
-        self.status = Status.ONLINE
+        self.status_code = Status.ONLINE
 
         # Respond to message
         await message.channel.send(reply[0])
@@ -81,16 +82,16 @@ class DiscordClient(discord.Client):
         ONLINE -> IDLE -> OFFLINE
         """
 
-        if self.status == Status.OFFLINE:
+        if self.status_code == Status.OFFLINE:
             return
 
         if self.status == Status.ONLINE:
             await self.change_presence(status=discord.Status.idle, activity=None)
-            self.status = Status.IDLE
+            self.status_code = Status.IDLE
             return
 
         await self.change_presence(status=discord.Status.offline, activity=None)
-        self.status = Status.OFFLINE
+        self.status_code = Status.OFFLINE
 
 
 INTENTS = discord.Intents.all()
