@@ -34,7 +34,6 @@ class DiscordClient(discord.Client):
         It sets up the database connection and prepares the client for use.
         """
         super().__init__(*args, **kwargs)
-        self.status = None
         self.status_code = StatusCode.OFFLINE
 
     async def on_ready(self):
